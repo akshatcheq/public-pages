@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 20px;
+  }
+  #container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  #message {
+    margin-bottom: 20px;
+  }
+  #buttons {
+    display: flex;
+    gap: 10px;
+  }
+  .button {
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+  }
+  .success {
+    background-color: #4CAF50;
+    color: white;
+  }
+  .failure {
+    background-color: #FF5733;
+    color: white;
+  }
+</style>
+</head>
+<body>
+  <div id="container">
+    <div id="message">
+      Please continue with the webview flow with <span id="applicationIdPlaceholder"></span>
+    </div>
+    <div id="buttons">
+      <button class="button success" onclick="sendStatus('SUCCESS')">SUCCESS</button>
+      <button class="button failure" onclick="sendStatus('FAILURE')">FAILURE</button>
+    </div>
+  </div>
+
+  <script>
+    const queryParams = new URLSearchParams(window.location.search);
+    const userId = queryParams.get('userId');
+    const applicationId = queryParams.get('applicationId');
+
+    document.getElementById('applicationIdPlaceholder').textContent = applicationId;
+
+    function sendStatus(status) {
+  const postData = {
+    applicationId: applicationId,
+    status: status
+  };
+
+  fetch('/apis/lending/kyc/callback', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(postData)
+  }).then(response => {
+    // Handle response as needed
+    console.log(`Status ${status} sent successfully`);
+    
+    // Redirect to YOUR_POST_URL after sending the status
+    window.location.href = 'https://uat.cheq.one/apis/lending/kyc/callback';
+  }).catch(error => {
+    console.error('Error sending status:', error);
+  });
+}
+  </script>
+</body>
+</html>
