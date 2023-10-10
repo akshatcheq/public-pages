@@ -69,7 +69,7 @@
     console.log(`Status ${status} sent successfully`);
     
     // Redirect to YOUR_POST_URL after sending the status
-    window.location.href = 'https://uat.cheq.one/apis/lending/kyc/callback';
+    window.location.href = 'localhost:3000/mandate-process/kyc/callback';
   }).catch(error => {
     console.error('Error sending status:', error);
   });
